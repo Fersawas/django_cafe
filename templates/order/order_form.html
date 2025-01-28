@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center">Создать заказ</h2>
+    <form method="post">
+        {% csrf_token %}
+        
+        <div class="card mb-3">
+            <div class="card-header bg-primary text-white">Основная информация</div>
+            <div class="card-body">
+                {{ form.as_p }}
+            </div>
+        </div>
+
+        <div class="card mb-3">
+            <div class="card-header bg-secondary text-white">Детали заказа</div>
+            <div class="card-body" id="order-detail-formset">
+                {{ formset.management_form }}
+                
+                {% for form in formset %}
+                    <div class="form-row mb-3 formset-item">
+                        {{ form.as_p }}
+                    </div>
+                {% endfor %}
+            </div>
+
+            <button type="button" id="add-form" class="btn btn-info">Добавить форму</button>
+        </div>
+        <button type="submit" class="btn btn-success w-100">Создать заказ</button>
+    </form>
+</div>
+
+<script>
+    let formIndex = {{ formset.management_form.TOTAL_FORMS.value|add:"0" }};
+    
+    document.getElementById('add-form').addEventListener('click', function() {
+        let formsetContainer = document.getElementById('order-detail-formset');
+        if (!formsetContainer) {
+            console.error("Не найден контейнер для добавления формы.");
+            return;
+        }
+        
+        let formRow = document.querySelector('.formset-item');
+        if (!formRow) {
+            console.error("Не найдена форма для клонирования.");
+            return;
+        }
+        let newForm = formRow.cloneNode(true);
+        newForm.innerHTML = newForm.innerHTML.replace(/form-(\d+)/g, function(match, p1) {
+            return 'form-' + formIndex;
+        });
+        formsetContainer.appendChild(newForm);
+        formIndex++;
+        document.getElementById('id_form-TOTAL_FORMS').value = formIndex;
+    });
+</script>
+{% endblock %}

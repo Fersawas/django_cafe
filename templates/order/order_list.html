@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block content %}
+<div>
+    <h3>Список заказов</h3>
+    <p class="lead"><a href="{% url 'orders:order-create' %}">Создать заказ</a></p>
+    {% for order in orders %}
+        {% include 'order/includes/order_detail_includes.html' %}
+    {% endfor %}
+    <p class="lead"><a href="{% url 'orders:order-delete' order.id %}">Удалить заказ</a></p>
+</div>
+
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+  {% if next %}
+    {% if user.is_authenticated %}
+      <p>
+        У вашего аккаунта нет доступа к этой странице.
+        Чтобы продолжить, войдите в систему с аккаунтом,
+        у которого есть доступ.
+      </p>
+    {% else %}
+      <p>
+        Пожалуйста, войдите в систему,
+        чтобы просматривать эту страницу.
+      </p>
+    {% endif %}
+  {% endif %}
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card shadow-sm">
+          <!-- Заголовок -->
+          <div class="card-header text-center bg-primary text-white">
+            <h4>Войти в систему</h4>
+          </div>
+  
+          <!-- Основная часть с формой -->
+          <div class="card-body">
+            <form method="post" action="{% url 'login' %}">
+              {% csrf_token %}
+              
+              <!-- Поле для имени пользователя -->
+              <div class="mb-3">
+                <label for="id_username" class="form-label">Имя пользователя</label>
+                {{ form.username }}
+              </div>
+  
+              <!-- Поле для пароля -->
+              <div class="mb-3">
+                <label for="id_password" class="form-label">Пароль</label>
+                {{ form.password }}
+              </div>
+  
+              <!-- Кнопка отправки -->
+              <button type="submit" class="btn btn-primary w-100 mt-3">Войти</button>
+            </form>
+          </div>
+  
+          <!-- Нижняя часть карточки -->
+          <div class="card-footer text-center">
+            <small>
+              <a href="">Забыли пароль?</a> | 
+              <a href="/auth/registration/">Создать аккаунт</a>
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

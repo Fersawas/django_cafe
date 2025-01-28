@@ -1,0 +1,7 @@
+<div class="bg-body-tertiary p-5 rounded mt-3">
+    <h2>Заказ №{{ order.id }}</h2>
+    <!-- food -->
+    <p class="lead">{{ order.all_price }}</p>
+    <p class="lead"><a href="{% url 'orders:order-delete' order.id %}">Удалить заказ</a></p>
+
+</div>
