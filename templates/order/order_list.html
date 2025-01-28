@@ -9,7 +9,6 @@
     {% for order in orders %}
         {% include 'order/includes/order_detail_includes.html' %}
     {% endfor %}
-    <p class="lead"><a href="{% url 'orders:order-delete' order.id %}">Удалить заказ</a></p>
 </div>
 
 {% endblock %}
