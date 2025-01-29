@@ -1,4 +1,5 @@
 from typing import Any
+from django.db.models.base import Model as Model
 from django.db.models.query import QuerySet
 from django.forms import modelformset_factory
 from django.shortcuts import render, redirect
@@ -66,4 +67,15 @@ class OrderCreateView(CreateView):
 class OrderDeleteView(DeleteView):
     model = Order
     success_url = reverse_lazy('orders:order-list')
+    template_name = 'order/order_form.html'
+    form_class = OrderForm
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context =  super().get_context_data(**kwargs)
+        context['form'] = self.get_form()
+        return context
     
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.delete()
+        return redirect(self.success_url)

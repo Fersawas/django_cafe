@@ -7,5 +7,5 @@ app_name = 'orders'
 urlpatterns = [
     path('orders/', OrderListView.as_view(), name='order-list'),
     path('make_order/', OrderCreateView.as_view(), name='order-create'),
-    path('order_delete/<int:pk>/', OrderDeleteView.as_view(), name='order-delete'),
+    path('delete_order/<int:pk>/', OrderDeleteView.as_view(), name='order-delete'),
 ]

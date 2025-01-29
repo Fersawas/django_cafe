@@ -2,17 +2,34 @@
 
 {% block content %}
 <div class="container mt-5">
+    {% if  'make_order/' in request.path %}
     <h2 class="text-center">Создать заказ</h2>
+    {% elif 'edit_order' in request.path %}
+    <h2 class="text-center">Редактировать заказ</h2>
+    {% else %}
+    <h2 class="text-center">Удалить заказ</h2>
+    {% endif %}
     <form method="post">
         {% csrf_token %}
         
+        <!-- Основная информация -->
         <div class="card mb-3">
             <div class="card-header bg-primary text-white">Основная информация</div>
             <div class="card-body">
+                {% if not 'delete_order/' in request.path %}
                 {{ form.as_p }}
+                {% else %}
+                <article>
+                    {% for food in order.food.all %}
+                        <p class="lead">Блюдо {{ food.title }}</p>
+                        <p class="lead">Его цена: {{ food.price }}</p>
+                    {% endfor %}
+                    <p class="lead">Общая цена заказа: {{ order.all_price }}</p>
+                </article>
+                {% endif %}
             </div>
         </div>
-
+        {% if 'delete_order/' not in request.path %}
         <div class="card mb-3">
             <div class="card-header bg-secondary text-white">Детали заказа</div>
             <div class="card-body" id="order-detail-formset">
@@ -27,8 +44,14 @@
 
             <button type="button" id="add-form" class="btn btn-info">Добавить форму</button>
         </div>
+        
         <button type="submit" class="btn btn-success w-100">Создать заказ</button>
+        {% else %}
+        <button type="submit" class="btn btn-danger w-100">Удалить</button>
+        {% endif %}
+        </form>
     </form>
+
 </div>
 
 <script>
